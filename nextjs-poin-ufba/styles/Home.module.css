@@ -9,12 +9,12 @@
 }
 
 .main {
-  padding: 5rem 0;
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 10px;
+  background-color: rgb(208, 212, 150);
 }
 
 .footer {
@@ -111,6 +111,10 @@
 .logo {
   height: 1em;
   margin-left: 0.5rem;
+}
+
+.input {
+  border-radius: 10px;
 }
 
 @media (max-width: 600px) {
