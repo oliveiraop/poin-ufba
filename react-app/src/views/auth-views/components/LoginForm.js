@@ -34,7 +34,6 @@ export const LoginForm = (props) => {
     showAuthMessage,
     token,
     redirect,
-    allowRedirect,
     signInWithGoogle,
     signInWithFacebook,
   } = props;
@@ -62,8 +61,7 @@ export const LoginForm = (props) => {
   };
 
   useEffect(() => {
-    console.log("lala");
-    if (token !== null && allowRedirect) {
+    if (token !== null) {
       history.push(redirect);
     }
     if (showMessage) {
