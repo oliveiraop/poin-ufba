@@ -1,13 +1,15 @@
-import enLang from './entries/en_US';
-import zhLang from './entries/zh_CN';
-import frLang from './entries/fr_FR';
-import jaLang from './entries/ja_JP'
+import enLang from "./entries/en_US";
+import zhLang from "./entries/zh_CN";
+import frLang from "./entries/fr_FR";
+import jaLang from "./entries/ja_JP";
+import ptLang from "./entries/pt_BR";
 
 const AppLocale = {
-    en: enLang,
-    zh: zhLang,
-    fr: frLang,
-    ja: jaLang
+  en: enLang,
+  zh: zhLang,
+  fr: frLang,
+  ja: jaLang,
+  pt: ptLang,
 };
 
 export default AppLocale;
