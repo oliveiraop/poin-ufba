@@ -42,12 +42,14 @@ const LoginTwo = (props) => {
               <Col xs={0} sm={0} md={0} lg={20}>
                 <img
                   className="img-fluid mb-5"
-                  src="/img/others/img-18.png"
+                  src="/img/others/logo-azul-fundo-transparente.png"
                   alt=""
                 />
-                <h1 className="text-white">Welcome to POIN UFBA</h1>
+                <h1 className="text-white">Bem-vindo(a) ao POIN UFBA</h1>
                 <p className="text-white">
-                  Rede de contato entre profesores, ex estudantes e etc.
+                  POIN UFBA é um espaço onde você pode (re)conhecer e (re)encontrar
+                  alunos e ex-alunos da UFBA. Uma rede social onde todos têm voz.
+                  A nossa rede social.
                 </p>
               </Col>
             </Row>
