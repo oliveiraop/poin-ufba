@@ -20,10 +20,10 @@ const LoginTwo = (props) => {
           <div className="container d-flex flex-column justify-content-center h-100">
             <Row justify="center">
               <Col xs={24} sm={24} md={20} lg={12} xl={8}>
-                <h1>Sign In</h1>
+                <h1>Entrar</h1>
                 <p>
-                  Don't have an account yet?{" "}
-                  <a href="/auth/register-2">Sign Up</a>
+                  Não tem conta ainda?{" "}
+                  <a href="/auth/register">Registrar</a>
                 </p>
                 <div className="mt-4">
                   <LoginForm {...props} />
@@ -60,7 +60,7 @@ const LoginTwo = (props) => {
                   href="/#"
                   onClick={(e) => e.preventDefault()}
                 >
-                  Term & Conditions
+                  Termos e Condições
                 </a>
                 <span className="mx-2 text-white"> | </span>
                 <a
@@ -68,7 +68,7 @@ const LoginTwo = (props) => {
                   href="/#"
                   onClick={(e) => e.preventDefault()}
                 >
-                  Privacy & Policy
+                  Política de Privacidade
                 </a>
               </div>
             </div>
