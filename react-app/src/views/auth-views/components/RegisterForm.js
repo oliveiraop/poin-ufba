@@ -92,7 +92,7 @@ export const RegisterForm = (props) => {
 				</Form.Item>
 				<Form.Item 
 					name="password" 
-					label="Password" 
+					label="Senha" 
 					rules={rules.password}
 					hasFeedback
 				>
@@ -100,7 +100,7 @@ export const RegisterForm = (props) => {
 				</Form.Item>
 				<Form.Item 
 					name="confirm" 
-					label="ConfirmPassword" 
+					label="Confirmar Senha" 
 					rules={rules.confirm}
 					hasFeedback
 				>
@@ -108,7 +108,7 @@ export const RegisterForm = (props) => {
 				</Form.Item>
 				<Form.Item>
 					<Button type="primary" htmlType="submit" block loading={loading}>
-						Sign Up
+						Registrar
 					</Button>
 				</Form.Item>
 			</Form>

@@ -20,8 +20,8 @@ const RegisterTwo = props => {
 					<div className="container d-flex flex-column justify-content-center h-100">
 						<Row justify="center">
 							<Col xs={24} sm={24} md={20} lg={12} xl={8}>
-								<h1>Sign Up</h1>
-								<p>Already have an account? <a href="/auth/login-2">Sign In</a></p>
+								<h1>Registrar</h1>
+								<p>Já tem conta? <a href="/auth/login">Entrar</a></p>
 								<div className="mt-4">
 									<RegisterForm {...props} />
 								</div>
@@ -37,15 +37,15 @@ const RegisterTwo = props => {
 						<Row justify="center">
 							<Col xs={0} sm={0} md={0} lg={20}>
 								<img className="img-fluid mb-5" src="/img/others/img-19.png" alt=""/>
-								<h1 className="text-white">Welcome to emilus</h1>
-								<p className="text-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel convallis elit fermentum pellentesque.</p>
+								<h1 className="text-white">Bem vindo ao Poin</h1>
+								<p className="text-white">Rede universitária.</p>
 							</Col>
 						</Row>
 						<div className="d-flex justify-content-end pb-4">
 							<div>
-								<a className="text-white" href="/#" onClick={e => e.preventDefault()}>Term & Conditions</a>
+								<a className="text-white" href="/#" onClick={e => e.preventDefault()}>Termos e Condições</a>
 								<span className="mx-2 text-white"> | </span>
-								<a className="text-white" href="/#" onClick={e => e.preventDefault()}>Privacy & Policy</a>
+								<a className="text-white" href="/#" onClick={e => e.preventDefault()}>Política de Privacidade</a>
 							</div>
 						</div>
 					</div>

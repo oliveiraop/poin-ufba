@@ -75,7 +75,7 @@ export const LoginForm = (props) => {
     <div>
       <Divider>
         <span className="text-muted font-size-base font-weight-normal">
-          or connect with
+          ou entre com
         </span>
       </Divider>
       <div className="d-flex justify-content-center">
@@ -116,11 +116,11 @@ export const LoginForm = (props) => {
           rules={[
             {
               required: true,
-              message: "Please input your email",
+              message: "Por favor insira o email",
             },
             {
               type: "email",
-              message: "Please enter a validate email!",
+              message: "Coloque um email válido!",
             },
           ]}
         >
@@ -136,13 +136,13 @@ export const LoginForm = (props) => {
                   : ""
               }`}
             >
-              <span>Password</span>
+              <span>Senha</span>
               {showForgetPassword && (
                 <span
                   onClick={() => onForgetPasswordClick}
                   className="cursor-pointer font-size-sm font-weight-normal text-muted"
                 >
-                  Forget Password?
+                  Esqueceu a senha?
                 </span>
               )}
             </div>
@@ -150,15 +150,19 @@ export const LoginForm = (props) => {
           rules={[
             {
               required: true,
-              message: "Please input your password",
+              message: "Por favor coloque a senha",
             },
           ]}
         >
           <Input.Password prefix={<LockOutlined className="text-primary" />} />
         </Form.Item>
+        <p>
+          Esqueceu a senha? {" "}
+            <a href="/auth/forgot-password">Clique aqui</a>
+        </p>
         <Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>
-            Sign In
+            Entrar
           </Button>
         </Form.Item>
         {otherSignIn ? renderOtherSignIn : null}
