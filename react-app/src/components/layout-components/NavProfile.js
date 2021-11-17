@@ -9,6 +9,7 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { signOut } from "redux/actions/Auth";
+import { currentUser } from "auth/FirebaseAuth";
 
 const menuItem = [
   {
@@ -34,16 +35,18 @@ const menuItem = [
   },
 ];
 
-export const NavProfile = ({ signOut }) => {
-  const profileImg = "/img/avatars/thumb-1.jpg";
+export const NavProfile = ({ signOut, user }) => {
+  if (!user) return null;
+
+  const profileImg = user.photoURL;
   const profileMenu = (
     <div className="nav-profile nav-dropdown">
       <div className="nav-profile-header">
         <div className="d-flex">
           <Avatar size={45} src={profileImg} />
-          <div className="pl-3">
-            <h4 className="mb-0">Charlie Howard</h4>
-            <span className="text-muted">Frontend Developer</span>
+          <div className="pl-3" style={{ marginLeft: 10 }}>
+            <h4 className="mb-0">{`${user.displayName.split(" ")[0]}`}</h4>
+            <span className="text-muted">{user.email}</span>
           </div>
         </div>
       </div>
@@ -70,7 +73,7 @@ export const NavProfile = ({ signOut }) => {
     </div>
   );
   return (
-    <Dropdown placement="bottomLeft" overlay={profileMenu}>
+    <Dropdown placement="bottomLeft" overlay={profileMenu} trigger={["click"]}>
       <Menu className="d-flex align-item-center" mode="horizontal">
         <Menu.Item key="12312">
           <Avatar src={profileImg} />
@@ -80,4 +83,9 @@ export const NavProfile = ({ signOut }) => {
   );
 };
 
-export default connect(null, { signOut })(NavProfile);
+const mapStateToProps = ({ auth }) => {
+  const { user } = auth;
+  return { user };
+};
+
+export default connect(mapStateToProps, { signOut })(NavProfile);

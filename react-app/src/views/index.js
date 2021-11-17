@@ -8,6 +8,9 @@ import { IntlProvider } from "react-intl";
 import { ConfigProvider } from "antd";
 import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from "configs/AppConfig";
 
+import { auth } from "auth/FirebaseAuth";
+import { setAuthenticatedUser } from "redux/actions/Auth";
+
 function RouteInterceptor({ children, isAuthenticated, ...rest }) {
   return (
     <Route
@@ -29,8 +32,13 @@ function RouteInterceptor({ children, isAuthenticated, ...rest }) {
 }
 
 export const Views = (props) => {
-  const { locale, token, location } = props;
+  const { locale, token, location, setAuthenticatedUser } = props;
   const currentAppLocale = AppLocale[locale];
+
+  auth.onAuthStateChanged((user) => {
+    setAuthenticatedUser(user);
+  });
+
   return (
     <IntlProvider
       locale={currentAppLocale.locale}
@@ -59,4 +67,8 @@ const mapStateToProps = ({ theme, auth }) => {
   return { locale, token };
 };
 
-export default withRouter(connect(mapStateToProps)(Views));
+const mapDispatchToProps = {
+  setAuthenticatedUser,
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Views));
