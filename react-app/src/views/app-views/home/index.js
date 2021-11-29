@@ -19,6 +19,7 @@ import {
   ContactsOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
+import { usePostagem } from "./usePostagem";
 
 const { Meta } = Card;
 const { TextArea } = Input;
@@ -35,6 +36,9 @@ const Home = (props) => {
   const [loading, setLoading] = React.useState(true);
   const [isPostFormVisible, setPostFormVisible] = React.useState(false);
   const [form] = Form.useForm();
+
+  const { posts } = usePostagem();
+  console.log(posts);
 
   const [feed, setFeed] = React.useState([
     {
