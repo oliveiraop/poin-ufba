@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { SettingOutlined } from '@ant-design/icons';
-import { Drawer, Menu } from 'antd';
-import ThemeConfigurator from './ThemeConfigurator';
+import React, { Component } from "react";
+import { SettingOutlined } from "@ant-design/icons";
+import { Drawer, Menu } from "antd";
+import ThemeConfigurator from "./ThemeConfigurator";
+import { NotificationConfigurator } from "../../views/app-views/home/NotificationConfigurator";
 import { connect } from "react-redux";
 
 export class NavPanel extends Component {
-	state = { visible: false };
+  state = { visible: false };
 
   showDrawer = () => {
     this.setState({
@@ -17,10 +18,10 @@ export class NavPanel extends Component {
     this.setState({
       visible: false,
     });
-	};
-	
-	render() {
-		return (
+  };
+
+  render() {
+    return (
       <>
         <Menu mode="horizontal">
           <Menu.Item onClick={this.showDrawer}>
@@ -28,22 +29,23 @@ export class NavPanel extends Component {
           </Menu.Item>
         </Menu>
         <Drawer
-          title="Theme Config"
+          title="Configurações"
           placement="right"
           width={350}
           onClose={this.onClose}
           visible={this.state.visible}
         >
-          <ThemeConfigurator/>
+          <NotificationConfigurator />
+          {/* <ThemeConfigurator /> */}
         </Drawer>
       </>
     );
-	}
+  }
 }
 
 const mapStateToProps = ({ theme }) => {
-  const { locale } =  theme;
-  return { locale }
+  const { locale } = theme;
+  return { locale };
 };
 
 export default connect(mapStateToProps)(NavPanel);

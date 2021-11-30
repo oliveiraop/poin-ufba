@@ -116,8 +116,7 @@ export const HeaderNav = (props) => {
             <NavNotification />
             <NavLanguage />
             <NavProfile />
-            {/*
-            {/* <NavPanel /> */}
+            <NavPanel />
           </div>
           {/* <NavSearch active={searchActive} close={onSearchClose} /> */}
         </div>

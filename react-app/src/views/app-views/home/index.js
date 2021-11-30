@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   Skeleton,
   Switch,
@@ -11,6 +11,8 @@ import {
   Col,
   Typography,
   Divider,
+  DatePicker,
+  TimePicker,
 } from "antd";
 import { Input, Select } from "antd";
 import {
@@ -23,7 +25,6 @@ import { usePostagem } from "../../../hooks/usePostagem";
 import FeedCard from "../../../components/app-components/FeedCard"
 const { Meta } = Card;
 const { TextArea } = Input;
-
 const { Option } = Select;
 
 const layout = {
@@ -38,7 +39,7 @@ const Home = (props) => {
   const [form] = Form.useForm();
   const { posts, isLoading, savePost } = usePostagem();
 
-  const postType = useRef("");
+  const [postType, setPostType] = useState("");
 
   const onFinish = async (values) => {
     setPostFormVisible(false);
@@ -46,7 +47,11 @@ const Home = (props) => {
       title: values.title,
       description: values.description,
       createdAt: new Date(),
-      postType: postType.current,
+      postType: postType,
+      date: values.date ? values.date.format("YYYY-MM-DD") : "",
+      time: values.time ? values.time.format("HH:mm:ss") : "",
+      location: values.location || "",
+      company: values.company || "",
     });
     form.resetFields();
     setLoading(false);
@@ -57,7 +62,7 @@ const Home = (props) => {
   }, [user]);
 
   const onClickPost = (type) => {
-    postType.current = type;
+    setPostType(type);
     setPostFormVisible(true);
   };
 
@@ -107,7 +112,7 @@ const Home = (props) => {
       ))}
 
       <Modal
-        title="Criar Postagem"
+        title={`Criar Postagem [${postType}]`}
         visible={isPostFormVisible}
         onOk={onClickSubmit}
         confirmLoading={loading}
@@ -131,6 +136,52 @@ const Home = (props) => {
           >
             <TextArea rows={4} />
           </Form.Item>
+
+          {postType === "event" && (
+            <>
+              <Form.Item
+                name="location"
+                label="Local"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+
+              <Form.Item
+                name="date"
+                label="Data"
+                rules={[{ required: true }]}
+                style={{
+                  display: "inline-block",
+                  width: "calc(50% - 5px)",
+                  marginRight: 8,
+                }}
+              >
+                <DatePicker />
+              </Form.Item>
+
+              <Form.Item
+                name="time"
+                label="Hora"
+                rules={[{ required: true }]}
+                style={{ display: "inline-block", width: "calc(50% - 5px)" }}
+              >
+                <TimePicker showSecond={false} />
+              </Form.Item>
+            </>
+          )}
+
+          {postType === "job" && (
+            <>
+              <Form.Item
+                name="company"
+                label="Empresa"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+            </>
+          )}
         </Form>
       </Modal>
     </div>
