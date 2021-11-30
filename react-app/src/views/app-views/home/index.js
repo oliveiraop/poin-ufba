@@ -21,8 +21,8 @@ import {
   ContactsOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { usePostagem } from "../../../hooks/usePostagem";
-import FeedCard from "../../../components/app-components/FeedCard"
+import { usePosts } from "../../../hooks/usePosts";
+import FeedCard from "../../../components/app-components/FeedCard";
 const { Meta } = Card;
 const { TextArea } = Input;
 const { Option } = Select;
@@ -37,7 +37,7 @@ const Home = (props) => {
   const [loading, setLoading] = React.useState(true);
   const [isPostFormVisible, setPostFormVisible] = React.useState(false);
   const [form] = Form.useForm();
-  const { posts, isLoading, savePost } = usePostagem();
+  const { posts, isLoading, savePost } = usePosts();
 
   const [postType, setPostType] = useState("");
 
@@ -106,7 +106,7 @@ const Home = (props) => {
       {posts.map((post, index) => (
         <Row key={`${index}-${post.user.id}`}>
           <Col span={16} push={4}>
-            <FeedCard post={post}/>
+            <FeedCard post={post} />
           </Col>
         </Row>
       ))}

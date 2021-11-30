@@ -1,6 +1,6 @@
-import { Switch } from "antd";
 import React, { useEffect } from "react";
-import firebase from "firebase";
+import { Switch } from "antd";
+import { useNotificationConfigurator } from "../../../hooks/useNotificationConfigurator";
 
 const ListOption = ({ name, selector, disabled, vertical }) => (
   <div
@@ -18,29 +18,7 @@ const ListOption = ({ name, selector, disabled, vertical }) => (
 );
 
 export const NotificationConfigurator = () => {
-  const [notificationConfig, setNotificationConfig] = React.useState({});
-  const userEmail = firebase.auth().currentUser.email;
-
-  useEffect(() => {
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(userEmail)
-      .onSnapshot((snapshopt) => {
-        setNotificationConfig(snapshopt.data());
-      });
-  }, []);
-
-  const { job, event } = notificationConfig;
-
-  const toggleListener = (isChecked, type) => {
-    console.log({ isChecked });
-    firebase
-      .firestore()
-      .collection("users")
-      .doc(userEmail)
-      .update({ [type]: isChecked });
-  };
+  const { job, event, toggleListener } = useNotificationConfigurator();
 
   return (
     <div className="mb-5">

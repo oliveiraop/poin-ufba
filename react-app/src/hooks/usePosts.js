@@ -1,7 +1,7 @@
 import firebase from "firebase";
 import { useEffect, useState } from "react";
 
-export const usePostagem = () => {
+export const usePosts = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [posts, setPosts] = useState([]);
 

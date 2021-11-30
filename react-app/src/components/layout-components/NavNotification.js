@@ -32,23 +32,16 @@ const getNotificationBody = (list) => {
       dataSource={list}
       renderItem={(item) => (
         <List.Item className="list-clickable">
-          <Flex alignItems="center">
-            <div className="pr-3">
-              {item.img ? (
-                <Avatar src={`/img/avatars/${item.img}`} />
-              ) : (
-                <Avatar
-                  className={`ant-avatar-${item.type}`}
-                  icon={getIcon(item.icon)}
-                />
-              )}
+          <div style={{ display: "flex", flex: 1 }}>
+            <div className="mr-3 pr-3">
+              <span className="font-weight-bold text-dark">{item.title} </span>{" "}
+              <br />
+              <span className="text-gray-light">{item.description}</span>
             </div>
-            <div className="mr-3">
-              <span className="font-weight-bold text-dark">{item.name} </span>
-              <span className="text-gray-light">{item.desc}</span>
-            </div>
-            <small className="ml-auto">{item.time}</small>
-          </Flex>
+            <small className="ml-3" style={{ marginLeft: "auto" }}>
+              {new Date(item.createdAt).toLocaleTimeString()}
+            </small>
+          </div>
         </List.Item>
       )}
     />
@@ -65,9 +58,13 @@ const getNotificationBody = (list) => {
 
 export const NavNotification = () => {
   const [visible, setVisible] = useState(false);
-  const [data, setData] = useState(notificationData);
+  const [viewd, setViewd] = useState(new Set());
 
-  const { notifications } = useNotifications();
+  const { notifications: allNotifications, clear } = useNotifications();
+
+  const notifications = allNotifications.filter(
+    (notification) => !viewd.has(notification.id)
+  );
 
   console.log(notifications);
 
@@ -75,19 +72,30 @@ export const NavNotification = () => {
     setVisible(flag);
   };
 
+  const onClickClear = () => {
+    const newViewed = new Set(viewd);
+    allNotifications.forEach((item) => {
+      newViewed.add(item.id);
+    });
+    setViewd(newViewed);
+    clear();
+  };
+
   const notificationList = (
     <div className="nav-dropdown nav-notification">
       <div className="nav-notification-header d-flex justify-content-between align-items-center">
-        <h4 className="mb-0">Notification</h4>
-        <Button type="link" onClick={() => setData([])} size="small">
-          Clear{" "}
+        <h4 className="mb-0">Notificações</h4>
+        <Button type="link" onClick={onClickClear} size="small">
+          Limpar{" "}
         </Button>
       </div>
-      <div className="nav-notification-body">{getNotificationBody(data)}</div>
-      {data.length > 0 ? (
+      <div className="nav-notification-body">
+        {getNotificationBody(notifications)}
+      </div>
+      {notifications.length > 0 ? (
         <div className="nav-notification-footer">
           <a className="d-block" href="#/">
-            View all
+            Ver todas
           </a>
         </div>
       ) : null}
@@ -104,7 +112,7 @@ export const NavNotification = () => {
     >
       <Menu mode="horizontal">
         <Menu.Item key="notification">
-          <Badge count={data.length}>
+          <Badge count={notifications.length}>
             <BellOutlined className="nav-icon mx-auto" type="bell" />
           </Badge>
         </Menu.Item>
