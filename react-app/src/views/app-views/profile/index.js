@@ -43,8 +43,34 @@ const layout = {
 
 
 function ProfileInfo(props) {
-  const { user } = props;
+  const { user, saveUserData } = props;
+  const [isUserDataFormVisible, setUserDataFormVisible] = React.useState(false)
+  const [userDataForm] = Form.useForm()
+
+  const onFinish = async (values) => {
+    console.log(user)
+    setUserDataFormVisible(false);
+    await saveUserData({
+      about: values.about,
+      address: values.address,
+      phone: values.phone,
+      email: values.email,
+      website: values.website,
+    });
+    userDataForm.resetFields();
+  };
+
+  const onClickSubmit = async () => {
+    try {
+      await userDataForm.validateFields();
+      userDataForm.submit();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
+    <>
     <Card>
       <Row justify="center">
         <Col sm={24} md={23}>
@@ -79,14 +105,16 @@ function ProfileInfo(props) {
                   </Button>
                   <Button size="small" className="ml-2">
                     Message
+                    </Button>
+                  <Button size="small" className="ml-2" onClick={() => setUserDataFormVisible(true)}>
+                    Edit
                   </Button>
                 </div>
               </Flex>
               <Row gutter="16">
                 <Col sm={24} md={8}>
                   <p className="mt-0 mr-3 text-muted text-md-left text-center">
-                    It is a long established fact that a reader will be
-                    distracted.
+                    {user.about}
                   </p>
                 </Col>
                 <Col xs={24} sm={24} md={8}>
@@ -167,7 +195,56 @@ function ProfileInfo(props) {
           </div>
         </Col>
       </Row>
-    </Card>
+      </Card>
+      <Modal
+        title={`Adicionar experiência`}
+        visible={isUserDataFormVisible}
+        onOk={onClickSubmit}
+        confirmLoading={false}
+        onCancel={() => setUserDataFormVisible(false)}
+      >
+        <Form
+          {...layout}
+          layout="vertical"
+          form={userDataForm}
+          name="control-hooks"
+          onFinish={onFinish}
+        >
+          <Form.Item
+            initialValue={user.about}
+            name="about"
+            label="Sobre"
+            rules={[{ required: false }]}
+          >
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item
+            initialValue={user.address}
+            name="address"
+            label="Endereço"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            initialValue={user.phone}
+            name="phone"
+            label="Telefone"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            initialValue={user.website}
+            name="website"
+            label="Website"
+            rules={[{ required: false }]}
+          >
+            <Input />
+          </Form.Item>
+          </Form>
+      </Modal>
+    </>
   );
 }
 
@@ -363,6 +440,7 @@ const Profile = (props) => {
         <ProfileInfo
           avatarSize={avatarSize}
           user={{ ...props.user, ...data.profile }}
+          saveUserData = {data.saveUserData}
         />
         <Row gutter="16">
 					<Col xs={24} sm={24} md={16}>

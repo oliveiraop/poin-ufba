@@ -34,12 +34,13 @@ export const useProfile = () => {
   }
 
   const saveUserData = async (userData) => {
-    const exp = {
+    const data = {
       ...userData,
+      email: currentUser.email,
       updatedAt: new Date().getTime(),
     };
-    console.log(exp)
-    await firebase.firestore().collection("users").doc(currentUser.email).update()
+    console.log(data)
+    await firebase.firestore().collection("users").doc(currentUser.email).update(data)
   }
 
   useEffect(() => {
@@ -77,5 +78,6 @@ export const useProfile = () => {
     isLoading,
     saveProfile,
     saveExperience,
+    saveUserData,
   };
 };
