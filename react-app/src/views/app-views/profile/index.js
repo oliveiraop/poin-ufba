@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Avatar, Button, Typography } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Avatar,
+  Button,
+  Typography,
+  Form,
+  Modal,
+  Input,
+  DatePicker,
+} from "antd";
 import { Icon } from "components/util-components/Icon";
 import {
   employementList,
@@ -18,6 +29,18 @@ import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import Flex from "components/shared-components/Flex";
 import { connect } from "react-redux";
 import { useProfile } from "../../../hooks/useProfile";
+import firebase from "firebase";
+
+
+
+
+const {TextArea} = Input
+const layout = {
+  labelCol: { span: 24 },
+  wrapperCol: { span: 24 },
+};
+
+
 
 function ProfileInfo(props) {
   const { user } = props;
@@ -148,8 +171,35 @@ function ProfileInfo(props) {
   );
 }
 
-const Experiences = ({experiences}) => (
-  <Card title="Experiences">
+const Experiences = ({experiences, saveExperience}) => {
+  const [isExperienceFormVisible, setExperienceFormVisible] = React.useState(false)
+  const [experienceForm] = Form.useForm()
+
+  const onFinish = async (values) => {
+    console.log(experiences)
+    setExperienceFormVisible(false);
+    await saveExperience({
+      title: values.title,
+      description: values.description,
+      startDate: values.startDate? firebase.firestore.Timestamp.fromDate(new Date(values.startDate)) : null,
+      endDate: values.endDate? firebase.firestore.Timestamp.fromDate(new Date(values.endDate)) : null,
+      company: values.company || "",
+    });
+    experienceForm.resetFields();
+  };
+
+  const onClickSubmit = async () => {
+    try {
+      await experienceForm.validateFields();
+      experienceForm.submit();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <>
+    <Card title="Experiences">
     <div className="mb-3">
       <Row>
         <Col sm={24} md={22}>
@@ -166,9 +216,73 @@ const Experiences = ({experiences}) => (
           })}
         </Col>
       </Row>
+      <Row>
+        <Col>
+          <Button
+            onClick={() => {
+              setExperienceFormVisible(true)
+          }}
+          >
+            Insert
+          </Button>
+        </Col>
+      </Row>
     </div>
-  </Card>
+      </Card>
+      <Modal
+        title={`Adicionar experiência`}
+        visible={isExperienceFormVisible}
+        onOk={onClickSubmit}
+        confirmLoading={false}
+        onCancel={() => setExperienceFormVisible(false)}
+      >
+        <Form
+          {...layout}
+          layout="vertical"
+          form={experienceForm}
+          name="control-hooks"
+          onFinish={onFinish}
+        >
+          <Form.Item
+            name="title"
+            label="Cargo"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="company"
+            label="Empresa"
+            rules={[{ required: true }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Descrição"
+            rules={[{ required: true }]}
+          >
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item
+            name="startDate"
+            label="Data de Inicio"
+            rules={[{ required: true }]}
+          >
+            <DatePicker format="MMMM YYYY"/>
+          </Form.Item>
+          <Form.Item
+            name="endDate"
+            label="Data de Fim"
+            rules={[{ required: false }]}
+          >
+            <DatePicker format="MMMM YYYY" defaultValue={null}/>
+          </Form.Item>
+          </Form>
+      </Modal>
+      </>
 );
+        }
 
 const Interested = () => (
   <Card title="Interested">
@@ -252,8 +366,7 @@ const Profile = (props) => {
         />
         <Row gutter="16">
 					<Col xs={24} sm={24} md={16}>
-						<Experiences experiences={data.experiences}/>
-            <Interested />
+            <Experiences experiences={data.experiences} saveExperience={data.saveExperience}/>
           </Col>
         </Row>
       </div>

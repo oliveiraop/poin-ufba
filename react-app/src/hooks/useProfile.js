@@ -5,6 +5,7 @@ export const useProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [profile, setProfile] = useState({});
   const [experiences, setExperiences] = useState([]);
+  const [currentUser, setCurrentUser] = useState({})
   
   
   
@@ -23,16 +24,34 @@ export const useProfile = () => {
     await firebase.firestore().collection("users").doc(currentUser.email).update()*/
   };
 
+  const saveExperience = async (experience) => {
+    const exp = {
+      ...experience,
+      createdAt: new Date().getTime(),
+    };
+    console.log(exp)
+    await firebase.firestore().collection("users").doc(currentUser.email).collection("experiences").add(exp)
+  }
+
+  const saveUserData = async (userData) => {
+    const exp = {
+      ...userData,
+      updatedAt: new Date().getTime(),
+    };
+    console.log(exp)
+    await firebase.firestore().collection("users").doc(currentUser.email).update()
+  }
+
   useEffect(() => {
     if (firebase.auth().currentUser.email == null) {
       return
     }
-    console.log('passou')
-    const userEmail = firebase.auth().currentUser.email;
+    const user = firebase.auth().currentUser;
+    setCurrentUser(user)
     firebase
       .firestore()
       .collection("users")
-      .doc(userEmail)
+      .doc(user.email)
       .onSnapshot(function (querySnapshot) {
         setProfile(querySnapshot.data());
         setIsLoading(false);
@@ -40,7 +59,7 @@ export const useProfile = () => {
       firebase
       .firestore()
       .collection("users")
-      .doc(userEmail)
+      .doc(user.email)
       .collection('experiences')
         .onSnapshot(function (querySnapshot) {
         const list = []
@@ -57,5 +76,6 @@ export const useProfile = () => {
     experiences,
     isLoading,
     saveProfile,
+    saveExperience,
   };
 };
