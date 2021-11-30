@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { usePostagem } from "../../../hooks/usePostagem";
-
+import FeedCard from "../../../components/app-components/FeedCard"
 const { Meta } = Card;
 const { TextArea } = Input;
 
@@ -101,17 +101,7 @@ const Home = (props) => {
       {posts.map((post, index) => (
         <Row key={`${index}-${post.user.id}`}>
           <Col span={16} push={4}>
-            <Card style={{ marginTop: 16 }}>
-              <Meta
-                avatar={<Avatar src={post.user.avatar} />}
-                title={post.title}
-                description={post.description}
-              />
-              <Divider />
-              <Typography.Text type="secondary">
-                Em {new Date(post.createdAt).toLocaleString()}
-              </Typography.Text>
-            </Card>
+            <FeedCard post={post}/>
           </Col>
         </Row>
       ))}
