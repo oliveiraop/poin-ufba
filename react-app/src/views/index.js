@@ -10,6 +10,7 @@ import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from "configs/AppConfig";
 
 import { auth } from "auth/FirebaseAuth";
 import { setAuthenticatedUser } from "redux/actions/Auth";
+import Loading from "components/shared-components/Loading";
 
 function RouteInterceptor({ children, isAuthenticated, ...rest }) {
   return (
@@ -35,9 +36,16 @@ export const Views = (props) => {
   const { locale, token, location, setAuthenticatedUser } = props;
   const currentAppLocale = AppLocale[locale];
 
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+
   auth.onAuthStateChanged((user) => {
     setAuthenticatedUser(user);
+    setIsAuthenticated(!!user);
   });
+
+  if (token && !isAuthenticated) {
+    return <Loading cover="page" />;
+  }
 
   return (
     <IntlProvider

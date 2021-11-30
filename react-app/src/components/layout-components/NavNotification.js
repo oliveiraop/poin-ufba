@@ -9,6 +9,8 @@ import {
 import notificationData from "assets/data/notification.data.json";
 import Flex from "components/shared-components/Flex";
 
+import { useNotifications } from "../../hooks/useNotifications";
+
 const getIcon = (icon) => {
   switch (icon) {
     case "mail":
@@ -64,6 +66,10 @@ const getNotificationBody = (list) => {
 export const NavNotification = () => {
   const [visible, setVisible] = useState(false);
   const [data, setData] = useState(notificationData);
+
+  const { notifications } = useNotifications();
+
+  console.log(notifications);
 
   const handleVisibleChange = (flag) => {
     setVisible(flag);
