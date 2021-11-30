@@ -27,11 +27,11 @@ export default function FeedCard({ post }) {
           <Typography.Text>
           {post.description} <br/>
           </Typography.Text>
-          {post.postType == "job" ? 
+          {post.postType === "job" ? 
           <Typography.Text>
           Empresa: {post.company ? post.company : "Confidencial"} <br/>
           </Typography.Text> : null }
-          { post.postType == "event" ?
+          { post.postType === "event" ?
           <Typography.Text>
           Local do Evento: {post.location ? post.location : "Não informado"} <br/>
           Data do evento: {post.date ? new Date(post.date).toLocaleString() : "Não informado"} <br/>
@@ -42,7 +42,7 @@ export default function FeedCard({ post }) {
           position: 'absolute',
           right: -10,
           top: 15,
-        }} color={post.postType == "job" ? '#f50' : post.postType == "event" ? '#2db7f5' : '#87d068'}>{post.postType == "job" ? 'Vaga' : post.postType == "event" ? 'Evento' : 'Postagem'}</Tag>
+        }} color={post.postType === "job" ? '#f50' : post.postType === "event" ? '#2db7f5' : '#87d068'}>{post.postType === "job" ? 'Vaga' : post.postType === "event" ? 'Evento' : 'Postagem'}</Tag>
       </div>
     );
 }
