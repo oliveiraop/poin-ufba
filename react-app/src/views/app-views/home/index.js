@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   Skeleton,
   Switch,
@@ -19,7 +19,7 @@ import {
   ContactsOutlined,
 } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { usePostagem } from "./usePostagem";
+import { usePostagem } from "../../../hooks/usePostagem";
 
 const { Meta } = Card;
 const { TextArea } = Input;
@@ -36,44 +36,18 @@ const Home = (props) => {
   const [loading, setLoading] = React.useState(true);
   const [isPostFormVisible, setPostFormVisible] = React.useState(false);
   const [form] = Form.useForm();
+  const { posts, isLoading, savePost } = usePostagem();
 
-  const { posts } = usePostagem();
-  console.log(posts);
+  const postType = useRef("");
 
-  const [feed, setFeed] = React.useState([
-    {
-      id: 1,
-      title: "Title 1",
-      description: "Description 1",
-      createdAt: new Date(),
-    },
-    {
-      id: 2,
-      title: "Title 2",
-      description: "Description 1",
-      createdAt: new Date(),
-    },
-    {
-      id: 3,
-      title: "Title 3",
-      description: "Description 1",
-      createdAt: new Date(),
-    },
-  ]);
-
-  const onFinish = (values) => {
-    console.log("onFinish", values);
+  const onFinish = async (values) => {
     setPostFormVisible(false);
-
-    setFeed([
-      {
-        id: feed.length + 1,
-        title: values.title,
-        description: values.description,
-        createdAt: new Date(),
-      },
-      ...feed,
-    ]);
+    await savePost({
+      title: values.title,
+      description: values.description,
+      createdAt: new Date(),
+      postType: postType.current,
+    });
     form.resetFields();
     setLoading(false);
   };
@@ -83,6 +57,7 @@ const Home = (props) => {
   }, [user]);
 
   const onClickPost = (type) => {
+    postType.current = type;
     setPostFormVisible(true);
   };
 
@@ -123,20 +98,18 @@ const Home = (props) => {
         </Col>
       </Row>
 
-      {feed.map((post) => (
-        <Row>
+      {posts.map((post, index) => (
+        <Row key={`${index}-${post.user.id}`}>
           <Col span={16} push={4}>
             <Card style={{ marginTop: 16 }}>
               <Meta
-                avatar={
-                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                }
+                avatar={<Avatar src={post.user.avatar} />}
                 title={post.title}
                 description={post.description}
               />
               <Divider />
               <Typography.Text type="secondary">
-                Em {post.createdAt.toLocaleString()}
+                Em {new Date(post.createdAt).toLocaleString()}
               </Typography.Text>
             </Card>
           </Col>
